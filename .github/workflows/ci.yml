@@ -24,6 +24,13 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      migrate:
+        image: migrate/migrate
+
+        options: >-
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
 
     steps:
     - uses: actions/checkout@v2
