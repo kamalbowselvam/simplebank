@@ -5,7 +5,7 @@ createdb:
 	docker exec -it postgres12 createdb --username=root --owner=root simple_bank
 
 dropdb:
-	docker exec -it postgres12 dropdb --username=root --owner=root simple_bank
+	docker exec -it postgres12 dropdb --username=root simple_bank
 
 migrateup:
 	migrate -path db/migration -database "postgresql://root:secret@localhost/simple_bank?sslmode=disable" -verbose up
@@ -14,10 +14,10 @@ migratedown:
 	migrate -path db/migration -database "postgresql://root:secret@localhost/simple_bank?sslmode=disable" -verbose down
 
 
-migrateuplocal:
+getup:
 	docker run -v C:\Users\JWNC9857\Workspace\simplebank\db\migration:/migrations --network host migrate/migrate -path=/migrations/ -database "postgresql://root:secret@localhost/simple_bank?sslmode=disable" up
 
-migratedownlocal:
+getdown:
 	docker run -v C:\Users\JWNC9857\Workspace\simplebank\db\migration:/migrations --network host migrate/migrate -path=/migrations/ -database "postgresql://root:secret@localhost/simple_bank?sslmode=disable" down
 
 sqlc:
@@ -26,4 +26,7 @@ sqlc:
 test:
 	go test -v -cover ./...
 
-.PHONY: createdb
+server:
+	go run main.go
+
+.PHONY: postgres createdb dropdb migrateup getup migratedown getdown sqlc test server
