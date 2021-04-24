@@ -15,10 +15,10 @@ migratedown:
 
 
 getup:
-	docker run -v C:\Users\JWNC9857\Workspace\simplebank\db\migration:/migrations --network host migrate/migrate -path=/migrations/ -database "postgresql://root:secret@localhost/simple_bank?sslmode=disable" up
+	docker run --rm -v C:\Users\JWNC9857\Workspace\simplebank\db\migration:/migrations --network host migrate/migrate -path=/migrations/ -database "postgresql://root:secret@localhost/simple_bank?sslmode=disable" up
 
 getdown:
-	docker run -v C:\Users\JWNC9857\Workspace\simplebank\db\migration:/migrations --network host migrate/migrate -path=/migrations/ -database "postgresql://root:secret@localhost/simple_bank?sslmode=disable" down
+	docker run --rm -v C:\Users\JWNC9857\Workspace\simplebank\db\migration:/migrations --network host migrate/migrate -path=/migrations/ -database "postgresql://root:secret@localhost/simple_bank?sslmode=disable" down -all
 
 sqlc:
 	docker run --rm -v C:\Users\JWNC9857\Workspace\simplebank:/src -w /src kjconroy/sqlc generate
@@ -29,4 +29,7 @@ test:
 server:
 	go run main.go
 
-.PHONY: postgres createdb dropdb migrateup getup migratedown getdown sqlc test server
+mock:
+	mockgen -package mockdb -destination db/mock/store.go github.com/kamalbowselvam/simple_bank/db/sqlc Store
+
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc test server
